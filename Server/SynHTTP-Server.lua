@@ -1,5 +1,5 @@
 local module = {}
-local thing = game.ReplicatedStorage:WaitForChild("http_error")
+local thing = game.ReplicatedStorage:WaitForChild("http_error") -- Create a RemoteFunction named 'http_error' in ReplicatedStorage
 local ver = "v1.0"
 function module.Init()
 	thing.OnServerInvoke = function(plr, request)
