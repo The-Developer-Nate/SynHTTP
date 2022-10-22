@@ -21,6 +21,7 @@ local UIListLayout_2 = Instance.new("UIListLayout")
 --Properties:
 
 SynHTTP.Name = "SynHTTP"
+syn.protect_gui(SynHTTP)
 SynHTTP.Parent = game.Players.LocalPlayer.PlayerGui
 SynHTTP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -215,4 +216,3 @@ local function JVNR_fake_script() -- Frame.DragScript
 
 end
 coroutine.wrap(JVNR_fake_script)()
-syn.protect_gui(SynHTTP)
