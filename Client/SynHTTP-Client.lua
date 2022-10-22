@@ -21,7 +21,7 @@ local UIListLayout_2 = Instance.new("UIListLayout")
 
 SynHTTP.Name = "SynHTTP"
 syn.protect_gui(SynHTTP)
-SynHTTP.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+SynHTTP.Parent = game.CoreGui
 SynHTTP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = SynHTTP
