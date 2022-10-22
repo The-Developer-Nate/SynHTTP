@@ -153,7 +153,7 @@ local function OJWW_fake_script() -- Frame.LocalScript
 		local httpserver = game.ReplicatedStorage:FindFirstChild("http_error")
 		if httpserver then
 			AddText("SynHTTP-Server "..httpserver:InvokeServer("getversion"))
-			AddText("Initializing..")
+			AddText("Initializing, Might freeze the game.")
 			httpserver.OnClientInvoke = function(dict)
 				AddText((dict.Method or "GET").." Request to ".. dict.Url)
 				local response = syn.request(dict)
