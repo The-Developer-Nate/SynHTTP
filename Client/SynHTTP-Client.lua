@@ -15,14 +15,13 @@ local Clear = Instance.new("TextButton")
 local UICorner_3 = Instance.new("UICorner")
 local ScrollingFrame = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
-local Request = Instance.new("TextLabel")
 local UIListLayout_2 = Instance.new("UIListLayout")
 
 --Properties:
 
 SynHTTP.Name = "SynHTTP"
 syn.protect_gui(SynHTTP)
-SynHTTP.Parent = game.Players.LocalPlayer.PlayerGui
+SynHTTP.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 SynHTTP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = SynHTTP
@@ -106,13 +105,17 @@ ScrollingFrame.Position = UDim2.new(0, 0, 0.1171875, 0)
 ScrollingFrame.Size = UDim2.new(0, 467, 0, 190)
 ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 ScrollingFrame.ScrollBarThickness = 0
+ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 UIListLayout.Parent = ScrollingFrame
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Padding = UDim.new(0, 5)
 
+UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout_2.Padding = UDim.new(0, 5)
+
+local Request = Instance.new("TextLabel")
 Request.Name = "Request"
-Request.Parent = game.StarterGui.SynHTTP.Frame.LocalScript
 Request.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Request.BackgroundTransparency = 1.000
 Request.BorderColor3 = Color3.fromRGB(27, 42, 53)
@@ -125,16 +128,6 @@ Request.TextSize = 14.000
 Request.TextWrapped = true
 Request.RichText = true
 Request.TextXAlignment = Enum.TextXAlignment.Left
-
-UIListLayout_2.Parent = game.StarterGui.SynHTTP.Frame.LocalScript
-UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout_2.Padding = UDim.new(0, 5)
-
--- Scripts:
-
-local function OJWW_fake_script() -- Frame.LocalScript
-
-	local Request = Request
 	local Search = Search
 	local Clear = Clear
 
@@ -171,9 +164,8 @@ local function OJWW_fake_script() -- Frame.LocalScript
 	end)
 
 	AddText("Welcome "..game.Players.LocalPlayer.Name.."!")
-end
-coroutine.wrap(OJWW_fake_script)()
-local function JVNR_fake_script() -- Frame.DragScript
+
+
 
 	--Not made by me, check out this video: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
 	--Put this inside of your Frame and configure the speed if you would like.
@@ -213,6 +205,3 @@ local function JVNR_fake_script() -- Frame.DragScript
 			end
 		end
 	end)
-
-end
-coroutine.wrap(JVNR_fake_script)()
