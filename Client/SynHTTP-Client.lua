@@ -128,80 +128,115 @@ Request.TextSize = 14.000
 Request.TextWrapped = true
 Request.RichText = true
 Request.TextXAlignment = Enum.TextXAlignment.Left
-	local Search = Search
-	local Clear = Clear
-
-	function AddText(text)
-		local e = Request:Clone()
-		e.Text = "<font color='#6cd1ff'>[Info]</font> "..text
-		e.Parent = ScrollingFrame
+local Search = Search
+local Clear = Clear
+local LegacyEnabled = false
+local RecommendedServerVersion = {version = 1.1,versiontype = "alpha"}
+local beforeinfo = ""
+local function isCompatible(Server: RemoteFunction)
+	local ver = Server:InvokeServer("getversion")
+	local vertype = Server:InvokeServer("getvertype")
+	
+	local compatibleVersions = {
+		[1] = {version = 1.1,versiontype = "alpha"}
+	}
+	
+	if RecommendedServerVersion.version > ver and vertype == nil then
+		AddText("Legacy compatibility required for this SynHTTP-Server.")
+		AddText("Enabling Legacy Compatability..")
+		beforeinfo = "LEGACY-"
+		return "legacy"
+	else
+		for i, v in pairs(compatibleVersions) do
+			if ver == v.version and vertype == v.versiontype then
+				return true
+			end
+		end
 	end
+	return false
+end
 
-	function AddError(text)
-		local e = Request:Clone()
-		e.Text = "<font color='#FF0000'>[Error]</font> "..text
-		e.Parent = ScrollingFrame
-	end
+function AddText(text)
+	local e = Request:Clone()
+	e.Text = "<font color='#6cd1ff'>["..beforeinfo.."Info]</font> "..text
+	e.Parent = ScrollingFrame
+end
 
-	Search.MouseButton1Click:Connect(function()
-		local httpserver = game.ReplicatedStorage:FindFirstChild("http_error")
-		if httpserver then
-			AddText("SynHTTP-Server "..httpserver:InvokeServer("getversion"))
-			AddText("Initializing, Might freeze the game.")
+function AddError(text)
+	local e = Request:Clone()
+	e.Text = "<font color='#FF0000'>["..beforeinfo.."Error]</font> "..text
+	e.Parent = ScrollingFrame
+end
+
+Search.MouseButton1Click:Connect(function()
+	local httpserver = game.ReplicatedStorage:FindFirstChild("http_error")
+	if httpserver then
+		local resp = isCompatible(httpserver)
+		if resp then
+			httpserver.OnClientInvoke = function(dict)
+				AddText((dict.Method or "GET").." Request to ".. dict.Url)
+				local response = syn.request(dict)
+				return response
+			end
+		elseif resp == "legacy" then
+			-- Never change this.
 			httpserver.OnClientInvoke = function(dict)
 				AddText((dict.Method or "GET").." Request to ".. dict.Url)
 				local response = syn.request(dict)
 				return response
 			end
 		else
-			AddError("Couldn't find SynHTTP-Server")
+			AddError("Incompatible server.")
 		end
-	end)
-
-	Clear.MouseButton1Click:Connect(function()
-		ScrollingFrame:ClearAllChildren()
-		UIListLayout:Clone().Parent = ScrollingFrame
-	end)
-
-	AddText("Welcome "..game.Players.LocalPlayer.Name.."!")
-
-
-
-	--Not made by me, check out this video: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
-	--Put this inside of your Frame and configure the speed if you would like.
-	--Enjoy! Credits go to: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
-
-	local UIS = game:GetService('UserInputService')
-	local frame = Frame
-	local dragToggle = nil
-	local dragSpeed = 0
-	local dragStart = nil
-	local startPos = nil
-
-	local function updateInput(input)
-		local delta = input.Position - dragStart
-		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
-			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-		game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+	else
+		AddError("Couldn't find SynHTTP-Server")
 	end
+end)
 
-	Top.InputBegan:Connect(function(input)
-		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-			dragToggle = true
-			dragStart = input.Position
-			startPos = frame.Position
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragToggle = false
-				end
-			end)
-		end
-	end)
+Clear.MouseButton1Click:Connect(function()
+	ScrollingFrame:ClearAllChildren()
+	UIListLayout:Clone().Parent = ScrollingFrame
+end)
 
-	UIS.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			if dragToggle then
-				updateInput(input)
+AddText("Welcome "..game.Players.LocalPlayer.Name.."!")
+
+
+
+--Not made by me, check out this video: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
+--Put this inside of your Frame and configure the speed if you would like.
+--Enjoy! Credits go to: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
+
+local UIS = game:GetService('UserInputService')
+local frame = Frame
+local dragToggle = nil
+local dragSpeed = 0
+local dragStart = nil
+local startPos = nil
+
+local function updateInput(input)
+	local delta = input.Position - dragStart
+	local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+		startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+end
+
+Top.InputBegan:Connect(function(input)
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+		dragToggle = true
+		dragStart = input.Position
+		startPos = frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragToggle = false
 			end
+		end)
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		if dragToggle then
+			updateInput(input)
 		end
-	end)
+	end
+end)
