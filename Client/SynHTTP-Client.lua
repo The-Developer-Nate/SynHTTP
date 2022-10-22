@@ -21,7 +21,7 @@ local UIListLayout_2 = Instance.new("UIListLayout")
 --Properties:
 
 SynHTTP.Name = "SynHTTP"
-SynHTTP.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+SynHTTP.Parent = game.CoreGui
 SynHTTP.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = SynHTTP
@@ -131,7 +131,7 @@ UIListLayout_2.Padding = UDim.new(0, 5)
 
 -- Scripts:
 
-local function OJWW_fake_script() -- Frame.LocalScript 
+local function OJWW_fake_script() -- Frame.LocalScript
 
 	local Request = Request
 	local Search = Search
@@ -172,7 +172,7 @@ local function OJWW_fake_script() -- Frame.LocalScript
 	AddText("Welcome "..game.Players.LocalPlayer.Name.."!")
 end
 coroutine.wrap(OJWW_fake_script)()
-local function JVNR_fake_script() -- Frame.DragScript 
+local function JVNR_fake_script() -- Frame.DragScript
 
 	--Not made by me, check out this video: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
 	--Put this inside of your Frame and configure the speed if you would like.
@@ -193,7 +193,7 @@ local function JVNR_fake_script() -- Frame.DragScript
 	end
 
 	Top.InputBegan:Connect(function(input)
-		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
 			dragToggle = true
 			dragStart = input.Position
 			startPos = frame.Position
