@@ -135,16 +135,19 @@ local RecommendedServerVersion = {version = 1.1,versiontype = "alpha"}
 local beforeinfo = ""
 local function isCompatible(Server: RemoteFunction)
 	local ver = Server:InvokeServer("getversion")
-	local vertype = Server:InvokeServer("getvertype")
-	
+	local vertype
+	if ver >= 1.1 then
+		vertype = Server:InvokeServer("getvertype")
+	end
+
 	local compatibleVersions = {
 		[1] = {version = 1.1,versiontype = "alpha"}
 	}
-	
+
 	if RecommendedServerVersion.version > ver and vertype == nil then
 		AddText("Legacy compatibility required for this SynHTTP-Server.")
 		AddText("Enabling Legacy Compatability..")
-		beforeinfo = "LEGACY-"
+		TextLabel.Text = "SynHTTP - Legacy"
 		return "legacy"
 	else
 		for i, v in pairs(compatibleVersions) do
@@ -172,7 +175,7 @@ Search.MouseButton1Click:Connect(function()
 	local httpserver = game.ReplicatedStorage:FindFirstChild("http_error")
 	if httpserver then
 		local resp = isCompatible(httpserver)
-		if resp then
+		if resp == true then
 			httpserver.OnClientInvoke = function(dict)
 				AddText((dict.Method or "GET").." Request to ".. dict.Url)
 				local response = syn.request(dict)
@@ -199,6 +202,8 @@ Clear.MouseButton1Click:Connect(function()
 end)
 
 AddText("Welcome "..game.Players.LocalPlayer.Name.."!")
+
+-- End of script
 
 
 
