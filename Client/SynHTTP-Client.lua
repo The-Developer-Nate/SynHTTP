@@ -146,6 +146,7 @@ ScrollingFrame.Position = UDim2.new(0, 0, 0.1171875, 0)
 ScrollingFrame.Size = UDim2.new(0, 467, 0, 190)
 ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 ScrollingFrame.ScrollBarThickness = 0
+ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 UIListLayout.Parent = ScrollingFrame
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
