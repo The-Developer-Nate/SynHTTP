@@ -174,12 +174,14 @@ Request.TextXAlignment = Enum.TextXAlignment.Left
 		local e = Request:Clone()
 		e.Text = "<font color='#6cd1ff'>[Info]</font> "..text
 		e.Parent = ScrollingFrame
+		ScrollingFrame.CanvasPosition += Vector2.new(0,e.Size.Y.Offset)
 	end
 
 	function AddError(text)
 		local e = Request:Clone()
 		e.Text = "<font color='#FF0000'>[Error]</font> "..text
 		e.Parent = ScrollingFrame
+		ScrollingFrame.CanvasPosition += Vector2.new(0,e.Size.Y.Offset)
 	end
 
 	Search.MouseButton1Click:Connect(function()
